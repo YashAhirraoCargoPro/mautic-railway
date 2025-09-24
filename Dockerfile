@@ -1,5 +1,6 @@
-FROM mautic/mautic:5-apache
+FROM mautic/mautic:4.4-apache
 
+# ARGs and ENV remain same
 ARG MAUTIC_DB_HOST
 ARG MAUTIC_DB_USER
 ARG MAUTIC_DB_PASSWORD
@@ -19,12 +20,9 @@ ENV MAUTIC_ADMIN_EMAIL=$MAUTIC_ADMIN_EMAIL
 ENV MAUTIC_ADMIN_PASSWORD=$MAUTIC_ADMIN_PASSWORD
 ENV PHP_INI_DATE_TIMEZONE='UTC'
 
-# ---- Install Mailgun bridge ----
 USER root
 WORKDIR /var/www/html
 
-RUN apt-get update && apt-get install -y git unzip zip \
-    && composer require symfony/mailgun-mailer \
-    && php bin/console cache:clear --env=prod
+RUN apt-get update && apt-get install -y git unzip zip
 
 USER www-data
